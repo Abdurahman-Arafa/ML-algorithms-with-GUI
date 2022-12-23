@@ -78,7 +78,7 @@ def is_float_in_range(input):
   """Check if the input is a float number between 0 and 1"""
   try:
       value = float(input)
-      if value >= 0 and value <= 1:
+      if value > 0 and value < 1:
           return True
       else:
           return False
