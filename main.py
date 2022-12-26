@@ -9,6 +9,7 @@ customtkinter.set_default_color_theme("blue");
  
 app = customtkinter.CTk() 
 app.geometry("400x500") 
+app.title("Machine Learning App")
 
 
 #---------------------------------------------------------------
@@ -100,6 +101,11 @@ def load_dataset():
  
 
 def show_result_view(alg):
+  """show the result view"""
+
+  if not hasattr(algorithms, 'accuracy'):
+    tkinter.messagebox.showerror("Test Error","Please test the data first !! ")
+    return
   destroy_all(); 
   make_frame(); 
   make_label("Results", [.5,.18]) 
@@ -112,12 +118,21 @@ def show_result_view(alg):
   make_label("F1 Score", [.5,.72])
   make_label(algorithms.f1_score, [.5,.77])
   make_back_button(lambda:train_test_window(alg))
-  make_button("main menu", main_window, [.75,.85],80)
+  
+  def back_to_main():
+    """delete the attributes and go back to main window"""
+    algorithms.dataset = None
+    del algorithms.model
+    del algorithms.conf_matrix
+    del algorithms.accuracy
+    del algorithms.precision
+    del algorithms.recall
+    del algorithms.f1_score
+    main_window()
+  make_button("home", back_to_main, [.75,.85],80)
 
 
-def train_test_window(algo): #s-->svm || t--> dession tree || k-->knn 
-  global alg
-  alg = algo
+def train_test_window(alg): #s-->svm || t--> dession tree || k-->knn 
   destroy_all(); 
   make_frame(); 
   make_label("Train & Test", [.5,.2]) 
@@ -143,6 +158,8 @@ def train_test_window(algo): #s-->svm || t--> dession tree || k-->knn
       algorithms.dession_tree(max_depth,float(input))
     elif alg=="k": #knn
       algorithms.KNN(n_neighbors,float(input))
+    elif alg=="lr": #logistic regression
+      algorithms.linear_regression(float(input))
   
 
   make_button("Train", get_input, [.5,.5]) 
@@ -157,6 +174,8 @@ def train_test_window(algo): #s-->svm || t--> dession tree || k-->knn
       dession_tree_window()
     elif alg=="k":
       KNN_window()
+    elif alg=="lr":
+      select_algorithm()
   make_back_button(back_func)
 
 
@@ -251,6 +270,7 @@ def select_algorithm():
   make_button("SVM",SVM_window, [.5,.4])
   make_button("Dession Tree",dession_tree_window, [.5,.5])
   make_button("KNN",KNN_window, [.5,.6])
+  make_button("Linear Regression",lambda: train_test_window('lr'), [.5,.7])
   make_back_button(classification_window)
    
  
@@ -301,7 +321,8 @@ def classification_window():
  
  
  
-def main_window(): 
+def main_window():
+  """Main window"""
   destroy_all()
   make_frame() 
   make_label("machine learning project", [.5,.3]) 
