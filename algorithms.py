@@ -10,23 +10,29 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score , precision_score , recall_score
 from sklearn.feature_selection import RFE
 import tkinter 
+from sklearn.preprocessing import LabelEncoder
+
 
 #global variables
 dataset = None
 num_feature = None
 
 
+#------------------Preprocessing------------------#
+
 #method to be called in each algorithm to get the reduced X and y.
 def rfe(estimator):
   """This function takes the estimator and returns the reduced X and y from the dataset"""
   X = dataset.iloc[:, :-1].values
-  y = dataset.iloc[:, -1].values
+  Y = dataset.iloc[:, -1].values
+  le=LabelEncoder()
+  y = le.fit_transform(Y)
   selector = RFE(estimator = estimator, n_features_to_select= num_feature)
-  X = selector.fit_transform(X, y)
+  X = selector.fit_transform(X=X, y=y)
   return X, y
 
 
-
+#------------------Algorithms------------------#
 
 def SVM(kernel, test_size):
   global model, X_test, y_test
@@ -98,6 +104,8 @@ def linear_regression(test_size):
   tkinter.messagebox.showinfo("Successful","Model Trained Successfully")
   return
 
+
+#------------------Testing------------------#
 
 def test():
   try:

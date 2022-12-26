@@ -1,5 +1,5 @@
 import tkinter 
-from tkinter.filedialog import askopenfilenames 
+from tkinter.filedialog import askopenfilename
 import customtkinter 
 import algorithms 
 import pandas as pd 
@@ -10,10 +10,10 @@ customtkinter.set_default_color_theme("blue");
 app = customtkinter.CTk() 
 app.geometry("400x500") 
 app.title("Machine Learning App")
-
+icon = tkinter.PhotoImage(file = r"C:\Users\abdob\OneDrive\Desktop\el nahas proj\proj\data-mining-project\icon\icon.png")
+app.iconphoto(False, icon)
 
 #---------------------------------------------------------------
-
 
  
 # make a standard button 
@@ -94,8 +94,8 @@ def destroy_all():
  
 def load_dataset():
   """prompt user to select a file and load it into dataset""" 
-  csv_file_path = askopenfilenames()
-  algorithms.dataset=pd.read_csv(csv_file_path[0]) 
+  csv_file_path = askopenfilename(filetypes=[("CSV files", "*.csv")])
+  algorithms.dataset=pd.read_csv(csv_file_path) 
    
  #-------------------------------------------------------------------   
  
@@ -118,7 +118,7 @@ def show_result_view(alg):
   make_label("F1 Score", [.5,.72])
   make_label(algorithms.f1_score, [.5,.77])
   make_back_button(lambda:train_test_window(alg))
-  
+
   def back_to_main():
     """delete the attributes and go back to main window"""
     algorithms.dataset = None
@@ -168,6 +168,7 @@ def train_test_window(alg): #s-->svm || t--> dession tree || k-->knn
 
   def back_func():
     """go back to the previous window -depending on the algorithm-"""
+    del algorithms.model
     if   alg=="s":
       SVM_window()
     elif alg=="t":
