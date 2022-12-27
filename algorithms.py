@@ -10,7 +10,6 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score , precision_score , recall_score
 from sklearn.feature_selection import RFE
 import tkinter 
-from sklearn.preprocessing import LabelEncoder
 
 
 #global variables
@@ -24,9 +23,7 @@ num_feature = None
 def rfe(estimator):
   """This function takes the estimator and returns the reduced X and y from the dataset"""
   X = dataset.iloc[:, :-1].values
-  Y = dataset.iloc[:, -1].values
-  le=LabelEncoder()
-  y = le.fit_transform(Y)
+  y = dataset.iloc[:, -1].values
   selector = RFE(estimator = estimator, n_features_to_select= num_feature)
   X = selector.fit_transform(X=X, y=y)
   return X, y
