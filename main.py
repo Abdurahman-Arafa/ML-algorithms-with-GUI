@@ -168,7 +168,10 @@ def train_test_window(alg): #s-->svm || t--> dession tree || k-->knn
 
   def back_func():
     """go back to the previous window -depending on the algorithm-"""
-    del algorithms.model
+    try:
+      del algorithms.model
+    except AttributeError:
+      pass
     if   alg=="s":
       SVM_window()
     elif alg=="t":
