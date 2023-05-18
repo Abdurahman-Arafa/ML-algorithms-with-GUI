@@ -34,7 +34,7 @@ This option allows you to load a dataset from a file. The app supports CSV files
 - ## Enter Feature Number:
 TThis option allows you to perform feature selection on the dataset using the RFE (Recursive Feature Elmiination) select the top n_features for the selected algorithm.
 
-- Train & Test window:
+- ## Train & Test window:
 allows the user to specify the testing size from the dataset and allowing for the training and testing of the model after.
 
 - ## Results window:
