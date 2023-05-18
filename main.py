@@ -1,8 +1,10 @@
+import pickle
 import tkinter 
 from tkinter.filedialog import askopenfilename
 import customtkinter 
 import algorithms 
 import pandas as pd 
+import os
  
 customtkinter.set_appearance_mode("dark"); 
 customtkinter.set_default_color_theme("blue"); 
@@ -10,9 +12,10 @@ customtkinter.set_default_color_theme("blue");
 app = customtkinter.CTk() 
 app.geometry("400x500") 
 app.title("Machine Learning App")
-icon = tkinter.PhotoImage(file = r"C:\Users\abdob\OneDrive\Desktop\el nahas proj\proj\data-mining-project\icon\icon.png")
-app.iconphoto(False, icon)
 
+proj_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(proj_dir, 'icon', 'icon.ico')
+app.iconbitmap(image_path)
 #---------------------------------------------------------------
 
  
@@ -96,7 +99,14 @@ def load_dataset():
   """prompt user to select a file and load it into dataset""" 
   csv_file_path = askopenfilename(filetypes=[("CSV files", "*.csv")])
   algorithms.dataset=pd.read_csv(csv_file_path) 
-   
+
+def save_model():
+  """ save the model in as a pickle file using sys dialog"""
+  filename = tkinter.filedialog.asksaveasfilename(defaultextension=".pkl")
+  # Save the model
+  with open(filename, "wb") as f:
+      pickle.dump(algorithms.model, f)
+    
  #-------------------------------------------------------------------   
  
 
@@ -129,7 +139,9 @@ def show_result_view(alg):
     del algorithms.recall
     del algorithms.f1_score
     main_window()
+        
   make_button("home", back_to_main, [.75,.85],80)
+  make_button("save model", save_model, [.5,.95],80 )
 
 
 def train_test_window(alg): #s-->svm || t--> dession tree || k-->knn 

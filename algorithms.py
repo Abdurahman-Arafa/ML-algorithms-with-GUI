@@ -19,7 +19,7 @@ num_feature = None
 
 #------------------Preprocessing------------------#
 
-#method to be called in each algorithm to get the reduced X and y.
+#method to be called in each algorithm to get the reduced X.
 def rfe(estimator):
   """This function takes the estimator and returns the reduced X and y from the dataset"""
   X = dataset.iloc[:, :-1].values
